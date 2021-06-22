@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Switch, Route, Link } from "react-router-dom";
+import Login from "./Pages/Login";
+import LoginSuccess from "./components/loginSuccess";
+import Profile from "./Pages/Profile";
+import axios from "axios";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+   const handelLogout = async () => {
+      try {
+         await axios.get("http://localhost:4000/logout", {
+            withCredentials: true,
+         });
+      } catch (error) {
+         console.log(error);
+      }
+   };
+   return (
+      <div className="App">
+         <nav>
+            <Link className="login-button" to="/login">
+               Login
+            </Link>
+            <p onClick={handelLogout} className="logout-button">
+               Logout
+            </p>
+         </nav>
+         <Switch>
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/login/success" component={LoginSuccess} />
+            <Route exact path="/login/error" component={Login} />
+            <Route exact path="/profile" component={Profile} />
+         </Switch>
+      </div>
+   );
 }
 
 export default App;
